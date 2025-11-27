@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gunz Fashion Store</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .lucide { display: inline-block; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    const Icon = ({ name, className = "w-6 h-6", ...props }) => {
+      const ref = React.useRef(null);
+      useEffect(() => {
+        if (ref.current && window.lucide) {
+          const icon = window.lucide.createElement(window.lucide[name]);
+          if (icon) {
+            ref.current.innerHTML = '';
+            ref.current.appendChild(icon);
+          }
+        }
+      }, [name]);
+      return <i ref={ref} className={className} {...props}></i>;
+    };
+
+    function App() {
+      const [currentPage, setCurrentPage] = useState('home');
+      const [cart, setCart] = useState([]);
+
+      const changePage = (page) => {
+        setCurrentPage(page);
+        window.scrollTo(0, 0);
+      };
+
+      const mensProducts = [
+        {
+          id: 1,
+          name: "Grunge Tee",
+          price: 49.99,
+          image: "https://lyfegoes.com/cdn/shop/files/89078a7278b143688bfe0dd1e2bc8a11.png?v=1727203549&width=1445",
+          description: "Premium cotton t-shirt with a perfect fit"
+        },
+        {
+          id: 2,
+          name: "Leather Jacket",
+          price: 129.99,
+          image: "https://cdna.lystit.com/1040/1300/n/photos/ssense/0fee09ce/rick-owens-BLACK-Edfu-Flight-Leather-Jacket.jpeg",
+          description: "Timeless denim jacket for any season"
+        },
+        {
+          id: 3,
+          name: "Super Baggy ahh Jeans",
+          price: 89.99,
+          image: "https://heyfancystyle.com/cdn/shop/files/S5b9f6148839b49a68be1b44ad2b2fd8cc.webp?v=1737574336",
+          description: "Comfortable stretch denim with modern cut"
+        },
+        {
+          id: 4,
+          name: "Alaska Boots",
+          price: 159.99,
+          image: "https://media-assets.grailed.com/prd/listing/temp/2daf344723a64539b87dca72a653647b",
+          description: "Handcrafted premium leather sneakers"
+        },
+        {
+          id: 5,
+          name: "Long Coat",
+          price: 249.99,
+          image: "https://shop.doverstreetmarket.com/cdn/shop/files/RICK_OWENS_11000000387480_6087.jpg?v=1759410612&width=2000",
+          description: "Elegant wool coat for cold weather"
+        }
+      ];
+
+      const womensProducts = [
+        {
+          id: 6,
+          name: "Silk Blouse",
+          price: 79.99,
+          image: "https://images.unsplash.com/photo-1618932260643-eee4a2f652a6?w=500&h=600&fit=crop",
+          description: "Elegant silk blouse for any occasion"
+        },
+        {
+          id: 7,
+          name: "Pleated Skirt",
+          price: 69.99,
+          image: "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?w=500&h=600&fit=crop",
+          description: "Classic pleated midi skirt"
+        },
+        {
+          id: 8,
+          name: "Midi Dress",
+          price: 119.99,
+          image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=500&h=600&fit=crop",
+          description: "Flowing midi dress perfect for summer"
+        },
+        {
+          id: 9,
+          name: "Heeled Boots",
+          price: 139.99,
+          image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=500&h=600&fit=crop",
+          description: "Stylish ankle boots with block heel"
+        },
+        {
+          id: 10,
+          name: "Trench Coat",
+          price: 199.99,
+          image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=500&h=600&fit=crop",
+          description: "Timeless trench coat in beige"
+        }
+      ];
+
+      const accessoriesProducts = [
+        {
+          id: 11,
+          name: "Leather Wallet",
+          price: 45.99,
+          image: "https://images.unsplash.com/photo-1627123424574-724758594e93?w=500&h=600&fit=crop",
+          description: "Premium leather bifold wallet"
+        },
+        {
+          id: 12,
+          name: "Classic Watch",
+          price: 189.99,
+          image: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=500&h=600&fit=crop",
+          description: "Minimalist stainless steel watch"
+        },
+        {
+          id: 13,
+          name: "Leather Belt",
+          price: 39.99,
+          image: "https://assets.hermes.com/is/image/hermesproduct/constance-belt-buckle-leather-strap-38mm--beltkits-38-010538UA89_composite_3-074562CK05_composite_3-0-0-800-800_g.jpg",
+          description: "Classic brown leather belt"
+        },
+        {
+          id: 14,
+          name: "Sunglasses",
+          price: 129.99,
+          image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500&h=600&fit=crop",
+          description: "UV protection aviator sunglasses"
+        },
+        {
+          id: 15,
+          name: "Leather Backpack",
+          price: 159.99,
+          image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&h=600&fit=crop",
+          description: "Vintage style leather backpack"
+        }
+      ];
+
+      const addToCart = (product) => {
+        setCart([...cart, product]);
+      };
+
+      const removeFromCart = (indexToRemove) => {
+        setCart(cart.filter((_, index) => index !== indexToRemove));
+      };
+
+      const getTotalPrice = () => {
+        return cart.reduce((total, item) => total + item.price, 0).toFixed(2);
+      };
+
+      const CartPage = () => (
+        <main>
+          <section className="max-w-7xl mx-auto px-4 py-12">
+            <div className="text-center mb-12">
+              <h1 className="text-4xl font-bold mb-4">Shopping Cart</h1>
+              <p className="text-gray-600">
+                {cart.length === 0 ? "Your cart is empty" : `${cart.length} item${cart.length > 1 ? 's' : ''} in your cart`}
+              </p>
+            </div>
+
+            {cart.length === 0 ? (
+              <div className="text-center py-20">
+                <Icon name="ShoppingCart" className="w-24 h-24 mx-auto mb-6 text-gray-300" />
+                <p className="text-xl text-gray-600 mb-8">Start shopping to add items to your cart</p>
+                <button
+                  onClick={() => changePage('home')}
+                  className="bg-black text-white px-8 py-3 hover:bg-gray-800"
+                >
+                  Continue Shopping
+                </button>
+              </div>
+            ) : (
+              <div className="grid lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-2 space-y-4">
+                  {cart.map((item, index) => (
+                    <div key={index} className="flex gap-4 border border-gray-200 rounded-lg p-4">
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-24 h-24 object-cover rounded"
+                      />
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-lg">{item.name}</h3>
+                        <p className="text-gray-600 text-sm mb-2">{item.description}</p>
+                        <p className="text-xl font-bold">${item.price}</p>
+                      </div>
+                      <button
+                        onClick={() => removeFromCart(index)}
+                        className="text-gray-400 hover:text-red-600 self-start"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="lg:col-span-1">
+                  <div className="border border-gray-200 rounded-lg p-6 sticky top-24">
+                    <h2 className="text-2xl font-bold mb-6">Order Summary</h2>
+                    <div className="space-y-4 mb-6">
+                      <div className="flex justify-between text-gray-600">
+                        <span>Subtotal</span>
+                        <span>${getTotalPrice()}</span>
+                      </div>
+                      <div className="flex justify-between text-gray-600">
+                        <span>Shipping</span>
+                        <span>Free</span>
+                      </div>
+                      <div className="border-t border-gray-200 pt-4 flex justify-between text-xl font-bold">
+                        <span>Total</span>
+                        <span>${getTotalPrice()}</span>
+                      </div>
+                    </div>
+                    <button className="w-full bg-black text-white py-3 hover:bg-gray-800 mb-4">
+                      Checkout
+                    </button>
+                    <button
+                      onClick={() => changePage('home')}
+                      className="w-full border border-gray-300 py-3 hover:bg-gray-50"
+                    >
+                      Continue Shopping
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </section>
+        </main>
+      );
+
+      const HomePage = () => (
+        <main>
+          <section className="max-w-7xl mx-auto px-4 py-20 text-center">
+            <h1 className="text-5xl font-bold mb-6">New Collection</h1>
+            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+              Discover the latest trends in fashion. Simple, elegant, and timeless pieces for every occasion.
+            </p>
+            <button 
+              onClick={() => changePage('mens')}
+              className="bg-black text-white px-8 py-3 hover:bg-gray-800"
+            >
+              Shop Now
+            </button>
+          </section>
+
+          <section className="bg-gray-50 py-16">
+            <div className="max-w-7xl mx-auto px-4">
+              <h2 className="text-3xl font-bold text-center mb-12">Our Technology</h2>
+              <div className="grid md:grid-cols-3 gap-8">
+                <div className="text-center">
+                  <Icon name="Wind" className="w-12 h-12 mx-auto mb-4 text-gray-800" />
+                  <h3 className="font-semibold mb-2">Lightweight Design</h3>
+                  <p className="text-gray-600">Premium materials engineered for maximum comfort and minimal weight</p>
+                </div>
+                <div className="text-center">
+                  <Icon name="Leaf" className="w-12 h-12 mx-auto mb-4 text-gray-800" />
+                  <h3 className="font-semibold mb-2">Sustainable</h3>
+                  <p className="text-gray-600">Made from eco-friendly, organic materials that care for the planet</p>
+                </div>
+                <div className="text-center">
+                  <Icon name="Zap" className="w-12 h-12 mx-auto mb-4 text-gray-800" />
+                  <h3 className="font-semibold mb-2">Breathable Fabric</h3>
+                  <p className="text-gray-600">Advanced moisture-wicking technology keeps you cool and comfortable all day</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <img src="https://wallpapers.com/images/hd/robert-pattinson-monochrome-photoshoot-qyrm0m7fzf1gdufp.jpg" alt="Cool photo" className="w-full" />
+
+          <section className="max-w-7xl mx-auto px-4 py-16">
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="text-center">
+                <img
+                  src="https://pbs.twimg.com/media/Gp3ITUNXkAE4TwK.jpg"
+                  alt="Women's Collection"
+                  className="h-64 w-full object-cover rounded-lg mb-4" 
+                />
+                <button
+                  onClick={() => changePage('womens')}
+                  className="bg-black text-white px-6 py-2 hover:bg-gray-800"
+                >
+                  Women's Collection
+                </button>
+              </div>
+              <div className="text-center">
+                <img
+                  src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjVO3jCLbAopIV4VM8nHmvaxCns7b6AzWOeQnskWcPZeLq8qrm3MmL-ozuKh3DD7vaOIUV-e0i-oEic0NPMTYXhKZwtPPHkMJuXG65spRJAKrSm9i4en_LPikWfvKnk4_uVF52_SkCElX8/s1600/IMG_0324.jpg"
+                  alt="Men's Collection"
+                  className="h-64 w-full object-cover rounded-lg mb-4"
+                />
+                <button
+                  onClick={() => changePage('mens')}
+                  className="bg-black text-white px-6 py-2 hover:bg-gray-800"
+                >
+                  Men's Collection
+                </button>
+              </div>
+              <div className="text-center">
+                <img
+                  src="https://i.pinimg.com/200x150/3e/e8/60/3ee8603aa5c65ef83f8ba84e8c0874fc.jpg"
+                  alt="Accessories"
+                  className="h-64 w-full object-cover rounded-lg mb-4" 
+                />
+                <button
+                  onClick={() => changePage('accessories')}
+                  className="bg-black text-white px-6 py-2 hover:bg-gray-800"
+                >
+                  Accessories
+                </button>
+              </div>
+            </div>
+          </section>
+        </main>
+      );
+
+      const ProductsPage = ({ products, title, subtitle }) => (
+        <main>
+          <section className="max-w-7xl mx-auto px-4 py-12">
+            <div className="text-center mb-12">
+              <h1 className="text-4xl font-bold mb-4">{title}</h1>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                {subtitle}
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {products.map((product) => (
+                <div key={product.id} className="group">
+                  <div className="relative overflow-hidden rounded-lg mb-4">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-96 object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <h3 className="font-semibold text-lg">{product.name}</h3>
+                    <p className="text-gray-600 text-sm">{product.description}</p>
+                    
+                    <div className="flex items-center justify-between pt-2">
+                      <span className="text-xl font-bold">${product.price}</span>
+                      <button
+                        onClick={() => addToCart(product)}
+                        className="bg-black text-white px-6 py-2 hover:bg-gray-800 transition-colors"
+                      >
+                        Add to Cart
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        </main>
+      );
+
+      const renderPage = () => {
+        switch(currentPage) {
+          case 'cart':
+            return <CartPage />;
+          case 'mens':
+            return <ProductsPage products={mensProducts} title="Men's Collection" subtitle="Carefully curated collection of men's fashion essentials" />;
+          case 'womens':
+            return <ProductsPage products={womensProducts} title="Women's Collection" subtitle="Elegant and timeless pieces for the modern woman" />;
+          case 'accessories':
+            return <ProductsPage products={accessoriesProducts} title="Accessories" subtitle="Complete your look with our premium accessories" />;
+          default:
+            return <HomePage />;
+        }
+      };
+
+      return (
+        <div className="min-h-screen bg-white">
+          <header className="border-b border-gray-800 sticky top-0 bg-black z-50">
+            <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+              <div 
+                className="flex items-center gap-2 cursor-pointer"
+                onClick={() => changePage('home')}
+              >
+                <Icon name="ShoppingBag" className="w-6 h-6 text-white" />
+                <span className="text-xl font-semibold text-white">Gunz</span>
+              </div>
+              <div className="flex items-center gap-8">
+                <nav className="hidden md:flex gap-8">
+                  <button 
+                    onClick={() => changePage('home')}
+                    className="text-gray-300 hover:text-white"
+                  >
+                    Shop
+                  </button>
+                  <a href="#" className="text-gray-300 hover:text-white">Contact</a>
+                </nav>
+                <button 
+                  className="relative"
+                  onClick={() => changePage('cart')}
+                >
+                  <Icon name="ShoppingCart" className="w-6 h-6 text-white" />
+                  {cart.length > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-white text-black text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                      {cart.length}
+                    </span>
+                  )}
+                </button>
+                <button className="md:hidden">
+                  <Icon name="Menu" className="w-6 h-6 text-white" />
+                </button>
+              </div>
+            </div>
+          </header>
+
+          {renderPage()}
+
+          <footer className="border-t border-gray-200 mt-20 bg-gray-50">
+            <div className="max-w-7xl mx-auto px-4 py-16">
+              <div className="grid md:grid-cols-4 gap-8 mb-12">
+                <div>
+                  <h3 className="font-semibold mb-4">Quick Links</h3>
+                  <ul className="space-y-2 text-gray-600">
+                    <li>
+                      <button 
+                        onClick={() => changePage('home')}
+                        className="hover:text-black"
+                      >
+                        Shop
+                      </button>
+                    </li>
+                    <li><a href="#" className="hover:text-black">Collections</a></li>
+                    <li><a href="#" className="hover:text-black">New Arrivals</a></li>
+                    <li><a href="#" className="hover:text-black">Sale</a></li>
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-4">Company</h3>
+                  <ul className="space-y-2 text-gray-600">
+                    <li><a href="#" className="hover:text-black">About Us</a></li>
+                    <li><a href="#" className="hover:text-black">Careers</a></li>
+                    <li><a href="#" className="hover:text-black">Press</a></li>
+                    <li><a href="#" className="hover:text-black">Blog</a></li>
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-4">Support</h3>
+                  <ul className="space-y-2 text-gray-600">
+                    <li><a href="#" className="hover:text-black">FAQ</a></li>
+                    <li><a href="#" className="hover:text-black">Shipping Info</a></li>
+                    <li><a href="#" className="hover:text-black">Returns</a></li>
+                    <li><a href="#" className="hover:text-black">Track Order</a></li>
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-4">Contact Us</h3>
+                  <ul className="space-y-2 text-gray-600">
+                    <li>Email: hello@gunz.com</li>
+                    <li>Phone: +1 (555) 123-4567</li>
+                    <li>Address: 123 Fashion St, NY 10001</li>
+                  </ul>
+                </div>
+              </div>
+              <div className="border-t border-gray-300 pt-8 mb-8">
+                <h3 className="font-semibold mb-4">Newsletter</h3>
+                <div className="flex gap-2 max-w-md">
+                  <input type="email" placeholder="Enter your email" className="flex-1 px-4 py-2 border border-gray-300 focus:outline-none focus:border-black" />
+                  <button className="bg-black text-white px-6 py-2 hover:bg-gray-800">Subscribe</button>
+                </div>
+              </div>
+              <div className="border-t border-gray-300 pt-8 text-center text-gray-600 text-sm">
+                <p>© 2025 Gunz. All rights reserved.</p>
+              </div>
+            </div>
+          </footer>
+        </div>
+      );
+    }
+
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
+</body>
+</html>
